@@ -20,6 +20,7 @@ def find_closest(location, centroids):
     """
     # BEGIN Question 3
     "*** YOUR CODE HERE ***"
+    return min(centroids, key=lambda x: distance(x, location))
     # END Question 3
 
 
@@ -49,6 +50,8 @@ def group_by_centroid(restaurants, centroids):
     """
     # BEGIN Question 4
     "*** YOUR CODE HERE ***"
+    rc_pairs = [[find_closest(restaurant_location(r), centroids), r] for r in restaurants]
+    return group_by_first(rc_pairs)
     # END Question 4
 
 
@@ -56,6 +59,7 @@ def find_centroid(cluster):
     """Return the centroid of the locations of the restaurants in cluster."""
     # BEGIN Question 5
     "*** YOUR CODE HERE ***"
+    return [mean(l) for l in zip(*[restaurant_location(r) for r in cluster])]
     # END Question 5
 
 
@@ -71,6 +75,8 @@ def k_means(restaurants, k, max_updates=100):
         old_centroids = centroids
         # BEGIN Question 6
         "*** YOUR CODE HERE ***"
+        clusters = group_by_centroid(restaurants, centroids)
+        centroids = [find_centroid(cluster) for cluster in clusters]
         # END Question 6
         n += 1
     return centroids
